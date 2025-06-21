@@ -9,7 +9,7 @@
           >
             <span class="text-white text-4xl">☕</span>
           </div>
-          <h1 class="text-5xl font-bold text-amber-900 mb-4">Welcome to Mocaccino CRM</h1>
+          <h1 class="text-5xl font-bold text-amber-900 mb-4">Welcome to Mocaccino CRM/ERM</h1>
           <p class="text-xl text-amber-700 max-w-2xl mx-auto leading-relaxed">
             A warm and delightful way to manage your customers and employees. Sweet, simple, and
             perfectly brewed for your business needs.
