@@ -158,14 +158,14 @@
           <div class="p-6 space-y-3">
             <router-link
               to="/customers?action=new"
-              class="w-full text-left p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 flex items-center space-x-3 block"
+              class="w-full text-left p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 flex items-center space-x-3"
             >
               <span class="text-lg">👥</span>
               <span class="text-amber-900 font-medium">Add New Customer</span>
             </router-link>
             <router-link
               to="/employees?action=new"
-              class="w-full text-left p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 flex items-center space-x-3 block"
+              class="w-full text-left p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 flex items-center space-x-3"
             >
               <span class="text-lg">💼</span>
               <span class="text-amber-900 font-medium">Add New Employee</span>

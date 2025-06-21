@@ -95,6 +95,12 @@
           >
             Delete
           </button>
+          <button
+            @click.stop="openNotesModal(customer.id)"
+            class="flex-1 bg-green-100 text-green-800 py-2 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors"
+          >
+            Notes
+          </button>
         </div>
       </div>
     </div>
@@ -170,11 +176,48 @@
         </form>
       </div>
     </div>
+
+    <!-- Customer Notes Modal -->
+    <div
+      v-if="showNotesModal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4 shadow-2xl">
+        <h3 class="text-2xl font-bold text-amber-900 mb-6">Customer Notes</h3>
+        <div class="mb-4">
+          <p class="text-amber-700 text-sm mb-2">
+            Add special notes, orders, preferences, or requests for this customer:
+          </p>
+          <textarea
+            v-model="currentNote"
+            class="w-full h-32 px-4 py-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none resize-none"
+            placeholder="e.g., Prefers table by the window, allergic to nuts, usual order: cappuccino with extra foam..."
+          ></textarea>
+          <p class="text-xs text-amber-600 mt-2">
+            💡 Perfect for tracking customer preferences, special requests, or frequent orders
+          </p>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            @click="saveNote"
+            class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200"
+          >
+            💾 Save Notes
+          </button>
+          <button
+            @click="showNotesModal = false"
+            class="flex-1 border-2 border-amber-300 text-amber-700 py-3 rounded-lg font-semibold hover:bg-amber-50 transition-all duration-200"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '../composables/useStore'
 import type { Customer, CustomerForm } from '../types'
@@ -186,6 +229,83 @@ const {
   updateCustomer: updateCustomerInStore,
   deleteCustomer: deleteCustomerFromStore,
 } = useStore()
+
+const customerNotes = ref<Map<number, string>>(new Map())
+const showNotesModal = ref<boolean>(false)
+const selectedCustomerId = ref<number | null>(null)
+const currentNote = ref<string>('')
+
+onMounted(async () => {
+  // Simulate fetching customer data from an API
+  setTimeout(() => {
+    customers.value = [
+      {
+        id: 1,
+        name: 'John Doe',
+        email: 'john.doe@example.com',
+        value: 1200,
+        status: 'Active',
+        lastContact: new Date('2024-05-01'),
+        createdAt: new Date('2023-12-15'),
+      },
+      {
+        id: 2,
+        name: 'Jane Smith',
+        email: 'jane.smith@example.com',
+        value: 800,
+        status: 'Inactive',
+        lastContact: new Date('2024-04-20'),
+        createdAt: new Date('2023-11-10'),
+      },
+      {
+        id: 3,
+        name: 'Alice Johnson',
+        email: 'alice.johnson@example.com',
+        value: 950,
+        status: 'Pending',
+        lastContact: new Date('2024-03-18'),
+        createdAt: new Date('2024-01-05'),
+      },
+      {
+        id: 4,
+        name: 'Bob Williams',
+        email: 'bob.williams@example.com',
+        value: 1500,
+        status: 'Active',
+        lastContact: new Date('2024-06-01'),
+        createdAt: new Date('2023-10-22'),
+      },
+      {
+        id: 5,
+        name: 'Charlie Brown',
+        email: 'charlie.brown@example.com',
+        value: 700,
+        status: 'Active',
+        lastContact: new Date('2024-05-25'),
+        createdAt: new Date('2024-02-14'),
+      },
+    ]
+  }, 500)
+})
+
+const openNotesModal = (customerId: number): void => {
+  selectedCustomerId.value = customerId
+  currentNote.value = customerNotes.value.get(customerId) || ''
+  showNotesModal.value = true
+}
+
+const saveNote = (): void => {
+  if (selectedCustomerId.value !== null) {
+    if (currentNote.value.trim()) {
+      customerNotes.value.set(selectedCustomerId.value, currentNote.value.trim())
+    } else {
+      customerNotes.value.delete(selectedCustomerId.value)
+    }
+    showNotesModal.value = false
+    selectedCustomerId.value = null
+    currentNote.value = ''
+  }
+}
 
 // Reactive state
 const searchQuery = ref<string>('')

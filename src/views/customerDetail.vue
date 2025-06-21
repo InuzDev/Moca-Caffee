@@ -203,18 +203,76 @@
         <!-- Notes Section -->
         <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-amber-200">
           <div class="p-6 border-b border-amber-200">
-            <h4 class="text-xl font-bold text-amber-900">Customer Notes</h4>
+            <div class="flex items-center justify-between">
+              <h4 class="text-xl font-bold text-amber-900">Special Customer Notes</h4>
+              <div class="flex items-center space-x-2">
+                <span class="text-sm text-amber-600">Perfect for orders & preferences</span>
+                <span class="text-lg">📝</span>
+              </div>
+            </div>
           </div>
           <div class="p-6">
-            <textarea
-              v-model="customerNotes"
-              @blur="saveNotes"
-              class="w-full h-32 p-4 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none resize-none"
-              placeholder="Add notes about this customer..."
-            ></textarea>
-            <p class="text-xs text-amber-600 mt-2">
-              Notes are automatically saved when you click outside the text area.
-            </p>
+            <div class="space-y-4">
+              <textarea
+                v-model="customerNotes"
+                @blur="saveNotes"
+                class="w-full h-40 p-4 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none resize-none"
+                placeholder="Add special notes about this customer...
+
+Examples:
+• Usual order: Large cappuccino, extra foam, no sugar
+• Prefers table by the window
+• Allergic to nuts - always double check ingredients
+• VIP customer - provide complimentary pastry
+• Likes to pay with exact change
+• Regular meeting spot for business clients"
+              ></textarea>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-amber-600">
+                  Notes are automatically saved when you click outside the text area.
+                </p>
+                <div class="flex items-center space-x-2 text-xs text-amber-600">
+                  <span>💡 Tip: Great for tracking orders, preferences & special requests</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Note Templates -->
+            <div class="mt-6 pt-4 border-t border-amber-200">
+              <p class="text-sm font-medium text-amber-800 mb-3">Quick Templates:</p>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  @click="addQuickNote('Usual order: ')"
+                  class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs hover:bg-amber-200 transition-colors"
+                >
+                  ☕ Usual Order
+                </button>
+                <button
+                  @click="addQuickNote('Allergic to: ')"
+                  class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs hover:bg-red-200 transition-colors"
+                >
+                  ⚠️ Allergy
+                </button>
+                <button
+                  @click="addQuickNote('Prefers: ')"
+                  class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:bg-blue-200 transition-colors"
+                >
+                  ❤️ Preference
+                </button>
+                <button
+                  @click="addQuickNote('VIP Customer - ')"
+                  class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs hover:bg-purple-200 transition-colors"
+                >
+                  ⭐ VIP
+                </button>
+                <button
+                  @click="addQuickNote('Special request: ')"
+                  class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs hover:bg-green-200 transition-colors"
+                >
+                  📋 Special Request
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -604,6 +662,14 @@ const getContactIcon = (type: Contact['type']): string => {
     'Follow-up': '📋',
   }
   return icons[type]
+}
+
+const addQuickNote = (template: string): void => {
+  if (customerNotes.value) {
+    customerNotes.value += (customerNotes.value ? '\n' : '') + template
+  } else {
+    customerNotes.value = template
+  }
 }
 
 onMounted(() => {
